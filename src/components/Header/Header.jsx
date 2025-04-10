@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
@@ -31,12 +32,18 @@ function Header() {
             isMenuOpen ? "flex" : "hidden"
           } lg:flex flex-col lg:flex-row absolute lg:relative left-0 top-full lg:top-0 w-full lg:w-auto bg-black lg:bg-transparent p-4 lg:p-0 space-y-4 lg:space-y-0`}
         >
-          <a className="hover:text-gray-300 transition-colors cursor-pointer pl-10">
+          <Link
+            to="/myprojects"
+            className="hover:text-gray-300 transition-colors cursor-pointer pl-10"
+          >
             Mis Proyectos
-          </a>
-          <a className="hover:text-gray-300 transition-colors cursor-pointer pl-10">
+          </Link>
+          <Link
+            to="/experience"
+            className="hover:text-gray-300 transition-colors cursor-pointer pl-10"
+          >
             Experiencia
-          </a>
+          </Link>
           <a className="hover:text-gray-300 transition-colors cursor-pointer pl-10">
             Estudios
           </a>
@@ -45,7 +52,9 @@ function Header() {
           </a>
         </nav>
 
-        <p className="absolute left-1/2 -translate-x-1/2">RUBÉN COLLADO</p>
+        <Link to="/" className="flex items-center">
+          <p className="absolute left-1/2 -translate-x-1/2">RUBÉN COLLADO</p>
+        </Link>
 
         <a className="hover:text-gray-300 transition-colors cursor-pointer ml-auto pr-10">
           Contáctame

@@ -62,9 +62,12 @@ function Header() {
           <p className="absolute left-1/2 -translate-x-1/2">RUBÉN COLLADO</p>
         </Link>
 
-        <a className="hover:text-gray-300 transition-colors cursor-pointer ml-auto pr-10">
+        <Link
+          to="/contact"
+          className="hover:text-gray-300 transition-colors cursor-pointer ml-auto pr-10"
+        >
           Contáctame
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header/Header";
-import Home from "./components/Home/Home";
-import MyProjects from "./components/MyProjects/MyProjects";
-import Experience from "./components/Experience/Experience";
-import Studies from "./components/Studies/Studies";
-import About from "./components/About/About";
-import Contact from "./components/Contact/Contact";
+import Header from "./pages/Header/Header";
+import Home from "./pages/Home/Home";
+import MyProjects from "./pages/MyProjects/MyProjects";
+import Experience from "./pages/Experience/Experience";
+import Studies from "./pages/Studies/Studies";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
 
 function App() {
   return (

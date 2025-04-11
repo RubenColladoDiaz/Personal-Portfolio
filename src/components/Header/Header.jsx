@@ -44,9 +44,12 @@ function Header() {
           >
             Experiencia
           </Link>
-          <a className="hover:text-gray-300 transition-colors cursor-pointer pl-10">
+          <Link
+            to="/studies"
+            className="hover:text-gray-300 transition-colors cursor-pointer pl-10"
+          >
             Estudios
-          </a>
+          </Link>
           <a className="hover:text-gray-300 transition-colors cursor-pointer pl-10">
             Sobre mi
           </a>

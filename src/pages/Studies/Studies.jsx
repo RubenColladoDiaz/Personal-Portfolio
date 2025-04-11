@@ -1,6 +1,6 @@
 import React from "react";
 import Study from "../../components/Study/Study";
-import Certificate from '../../components/Certificate/Certificate';
+import Certificate from "../../components/Certificate/Certificate";
 
 const Studies = () => {
   return (
@@ -15,18 +15,53 @@ const Studies = () => {
             studyImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ4QTjoUn7qOuF8tAOtFPeVglv6dx3prTlpg&s"
             studyTitle="Instituto Sabadell"
             studyCertificate="Desarrollo de Aplicaciones Multiplatafirma y Videojuegos (DAMvi)"
+            studyId="sabadell"
+            studyLocation="Carrer de Juvenal, 1, 08206 Sabadell, Barcelona"
+            studySkills={[
+              "Desarrollo de aplicaciones Android y Flutter",
+              "Programación en Java y C#",
+              "Desarrollo web con HTML, CSS, JavaScript y TypeScript",
+              "Bases de datos SQL, PSQL y MongoDB",
+              "Desarrollo de videojuegos con Unity y Godot",
+            ]}
           />
           <Study
             studyURL="https://agora.xtec.cat/iesrovira-forns/"
             studyImage="https://agora.xtec.cat/iesrovira-forns/wp-content/uploads/usu2519/2021/07/Ins-3.jpg"
             studyTitle="Instituto Rovira Forns"
             studyCertificate="Bachillerato Cientifico-Tecnologico"
+            studyId="rovira-forns"
+            studyLocation="Carrer de Tierno Galván, 77, 08130 Santa Perpètua de Mogoda, Barcelona"
+            studySkills={[
+              "Matemáticas Avanzadas",
+              "Física",
+              "Tecnología Industrial",
+              "Dibujo Técnico",
+              "Castellano",
+              "Catalán",
+              "Inglés",
+              "Educación Física",
+              "Competencias del Mundo Contemporàneo",
+            ]}
           />
           <Study
             studyURL="https://www.safasp.net/?lang=es"
             studyImage="https://www.staperpetua.cat/media/repository/directori/equipaments/altres/safa_2768.jpg"
             studyTitle="Instituto Sagrada Familia"
             studyCertificate="Educación Secundaria Obligatoria (ESO)"
+            studyId="sagrada-familia"
+            studyLocation="Carrer de Puig i Cadafalch, 50, 08130 Santa Perpètua de Mogoda, Barcelona"
+            studySkills={[
+              "Matemáticas Básicas",
+              "Ciencias Naturales",
+              "Tecnología",
+              "Informática Básica (Scratch y Python)",
+              "Inglés",
+              "Educación Física",
+              "Castellano",
+              "Catalán",
+              "Física"
+            ]}
           />
         </div>
 

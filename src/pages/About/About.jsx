@@ -15,7 +15,7 @@ function getAge() {
 }
 
 const About = () => {
-  const [age, setAge] = useState(getAge());
+  const [age] = useState(getAge());
 
   return (
     <div>
@@ -33,8 +33,8 @@ const About = () => {
           <p>30 de Octubre de 2004 - {age} años</p>
           <p>Barcelona, España</p>
 
-          <div className="mt-10 max-w-2xl px-4">
-            <h2 className="text-xl font-bold mb-4">Más sobre mí</h2>
+          <div className="mt-10 max-w-2xl px-4 text-justify">
+            <h2 className="text-xl font-bold mb-4 text-center">Más sobre mí</h2>
             <p className="mb-4">
               Además de mi pasión por la programación, disfruto explorando
               nuevas tecnologías y tendencias en el sector. Me considero una
@@ -42,15 +42,14 @@ const About = () => {
               nuevo.
             </p>
             <p className="mb-4">
-              En mi tiempo libre, me gusta mantenerme activo practicando deporte
-              y explorando la naturaleza. También disfruto de la fotografía y el
-              diseño, lo que me ayuda a mantener una perspectiva creativa en mi
-              trabajo.
+              En mi tiempo libre, me gusta mantenerme activo practicando
+              deporte. También disfruto de los videojuegos y el desarrollo, lo
+              que me ayuda a mantener una perspectiva creativa en mi trabajo.
             </p>
             <p>
               Mi objetivo es seguir creciendo profesionalmente mientras
-              contribuyo a proyectos innovadores que tengan un impacto positivo
-              en la sociedad.
+              contribuyo a proyectos innovadores que tengan un impacto en la
+              sociedad.
             </p>
           </div>
         </div>

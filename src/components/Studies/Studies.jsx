@@ -31,7 +31,7 @@ const Studies = () => {
           <div className="pt-20 flex flex-col md:ml-14">
             <p className="font-montserrat text-2xl">Instituto Rovira Forns</p>
             <a
-              href="https://agora.xtec.cat/ies-sabadell/"
+              href="https://agora.xtec.cat/iesrovira-forns/"
               className="block w-full md:w-96"
             >
               <img
@@ -50,7 +50,7 @@ const Studies = () => {
               Instituto Sagrada Familia
             </p>
             <a
-              href="https://agora.xtec.cat/ies-sabadell/"
+              href="https://www.safasp.net/?lang=es"
               className="block w-full md:w-96"
             >
               <img

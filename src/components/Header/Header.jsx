@@ -50,9 +50,12 @@ function Header() {
           >
             Estudios
           </Link>
-          <a className="hover:text-gray-300 transition-colors cursor-pointer pl-10">
+          <Link
+            to="/about"
+            className="hover:text-gray-300 transition-colors cursor-pointer pl-10"
+          >
             Sobre mi
-          </a>
+          </Link>
         </nav>
 
         <Link to="/" className="flex items-center">

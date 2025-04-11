@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Study from "../../components/Study/Study";
 import Certificate from '../../components/Certificate/Certificate';
 

@@ -1,4 +1,3 @@
-import "./MyProjects.css";
 import Project from "../../components/Project/Project";
 
 function MyProjects() {

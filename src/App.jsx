@@ -4,7 +4,7 @@ import Home from "./pages/Home/Home";
 import MyProjects from "./pages/MyProjects/MyProjects";
 import Experience from "./pages/Experience/Experience";
 import Studies from "./pages/Studies/Studies";
-import StudyDetails from "./pages/Studies/StudyDetails";
+import StudyDetails from "./pages/Study/StudyDetails";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 

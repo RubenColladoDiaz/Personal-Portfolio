@@ -1,6 +1,13 @@
 import React from "react";
 
+function getAge() {
+  const today = new Date();
+  let age = today.getFullYear();
+  return age;
+}
+
 function Home() {
+  let age = getAge();
   return (
     <div className="h-[calc(100vh-60px)] w-full flex flex-col items-center justify-center text-white relative overflow-hidden mt-[60px]">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black opacity-90" />
@@ -11,7 +18,7 @@ function Home() {
       <div className="relative z-10 text-center mb-40">
         <div className="mb-8">
           <p className="text-2xl font-montserrat tracking-widest animate-pulse">
-            2025
+            {age}
           </p>
         </div>
 

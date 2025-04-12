@@ -15,7 +15,7 @@ function StudyCard({
       whileHover={{ scale: 1.02 }}
       className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300"
     >
-      <div className="p-6">
+      <div className="p-6 text-center lg:text-left">
         <div className="space-y-4">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -59,7 +59,7 @@ function StudyCard({
               <motion.span
                 key={index}
                 whileHover={{ scale: 1.1 }}
-                className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm"
+                className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm mx-auto lg:mx-0"
               >
                 {tech}
               </motion.span>

@@ -19,7 +19,7 @@ const About = () => {
   const age = getAge();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8 lg:p-60">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8 pt-28 lg:p-60">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -72,10 +72,10 @@ const About = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 md:p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
           >
-            <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-400">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-400 text-center lg:text-left">
               Más sobre mí
             </h2>
-            <div className="space-y-4 md:space-y-6 text-gray-300 text-sm md:text-base">
+            <div className="space-y-4 md:space-y-6 text-gray-300 text-sm md:text-base text-justify">
               <p className="leading-relaxed">
                 Además de mi pasión por la programación, disfruto explorando
                 nuevas tecnologías y tendencias en el sector. Me considero una

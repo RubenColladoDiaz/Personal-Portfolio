@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 function Contact() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8 lg:p-60">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-40 lg:p-60 mt-8 md:mt-0">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -147,6 +147,17 @@ function Contact() {
             </div>
           </motion.div>
         </div>
+      </div>
+      <div className="text-white text-center mt-28">
+        <p className="font-montserrat text-blue-400">
+          Si quieres ver el código de mi portafolio
+        </p>
+        <a
+          className="text-white hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 transition-all duration-300"
+          href="https://gitlab.com/personal3532051/portrafoliofinal"
+        >
+          Enlace al Proyecto
+        </a>
       </div>
     </div>
   );

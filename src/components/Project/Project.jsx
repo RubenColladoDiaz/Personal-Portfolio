@@ -1,17 +1,44 @@
 import React from "react";
 
-const Project = ({ imageUrl, link, altText, description, extraDescription }) => {
+const Project = ({
+  imageUrl,
+  link,
+  altText,
+  description,
+  extraDescription,
+}) => {
   return (
-    <div className="px-4 py-2 text-center">
-      <a href={link} target="_blank" rel="noopener noreferrer">
-        <img
-          src={imageUrl}
-          alt={altText}
-          className="w-64 h-64 object-cover rounded-lg cursor-pointer mx-auto"
-        />
+    <div className="group">
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+      >
+        <div className="relative overflow-hidden rounded-lg mb-4">
+          <img
+            src={imageUrl}
+            alt={altText}
+            className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
       </a>
-      <p className="mt-2 text-center font-bold">{description}</p>
-      <p className="max-w-sm text-justify text-center mt-2">{extraDescription}</p>
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-montserrat font-semibold group-hover:text-blue-400 transition-colors duration-300">
+          {description}
+        </h2>
+        <p className="text-gray-300 leading-relaxed">{extraDescription}</p>
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block text-blue-400 hover:text-blue-300 transition-colors duration-300"
+        >
+          Ver proyectos →
+        </a>
+      </div>
     </div>
   );
 };

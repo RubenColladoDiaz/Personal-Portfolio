@@ -1,92 +1,90 @@
 import React from "react";
-import Study from "../../components/Study/Study";
-import Certificate from "../../components/Certificate/Certificate";
+import StudyCard from "../../components/StudyCard/StudyCard";
 
-const Studies = () => {
+function Studies() {
+  const studies = [
+    {
+      title: "Desarrollo de Aplicaciones Multiplataforma y Videojuegos (DAMvi)",
+      institution: "Instituto Sabadell",
+      period: "2022 - 2024",
+      description:
+        "Formación en desarrollo de aplicaciones multiplataforma y videojuegos.",
+      technologies: [
+        "Desarrollo de aplicaciones Android y Flutter",
+        "Programación en Java y C#",
+        "Desarrollo web con HTML, CSS, JavaScript y TypeScript",
+        "Bases de datos SQL, PSQL y MongoDB",
+        "Desarrollo de videojuegos con Unity y Godot",
+      ],
+      location: "Carrer de Juvenal, 1, 08206 Sabadell, Barcelona",
+      url: "https://agora.xtec.cat/ies-sabadell/",
+    },
+    {
+      title: "Bachillerato Cientifico-Tecnologico",
+      institution: "Instituto Rovira Forns",
+      period: "2020 - 2022",
+      description: "Formación en ciencias y tecnología.",
+      technologies: [
+        "Matemáticas Avanzadas",
+        "Física",
+        "Tecnología Industrial",
+        "Dibujo Técnico",
+        "Castellano",
+        "Catalán",
+        "Inglés",
+        "Educación Física",
+        "Competencias del Mundo Contemporàneo",
+      ],
+      location:
+        "Carrer de Tierno Galván, 77, 08130 Santa Perpètua de Mogoda, Barcelona",
+      url: "https://agora.xtec.cat/iesrovira-forns/",
+    },
+    {
+      title: "Educación Secundaria Obligatoria (ESO)",
+      institution: "Instituto Sagrada Familia",
+      period: "2016 - 2020",
+      description: "Formación básica en ciencias y tecnología.",
+      technologies: [
+        "Matemáticas Básicas",
+        "Ciencias Naturales",
+        "Tecnología",
+        "Informática Básica (Scratch y Python)",
+        "Inglés",
+        "Educación Física",
+        "Castellano",
+        "Catalán",
+        "Física",
+      ],
+      location:
+        "Carrer de Puig i Cadafalch, 50, 08130 Santa Perpètua de Mogoda, Barcelona",
+      url: "https://www.safasp.net/?lang=es",
+    },
+  ];
+
   return (
-    <div className="text-white">
-      <div className="flex flex-col items-center text-white">
-        <h1 className="text-3xl font-montserrat mt-20">Mis Estudios</h1>
-      </div>
-      <div className="flex flex-col md:flex-row justify-between mt-20">
-        <div className="flex flex-col">
-          <Study
-            studyURL="https://agora.xtec.cat/ies-sabadell/"
-            studyImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ4QTjoUn7qOuF8tAOtFPeVglv6dx3prTlpg&s"
-            studyTitle="Instituto Sabadell"
-            studyCertificate="Desarrollo de Aplicaciones Multiplatafirma y Videojuegos (DAMvi)"
-            studyId="sabadell"
-            studyLocation="Carrer de Juvenal, 1, 08206 Sabadell, Barcelona"
-            studySkills={[
-              "Desarrollo de aplicaciones Android y Flutter",
-              "Programación en Java y C#",
-              "Desarrollo web con HTML, CSS, JavaScript y TypeScript",
-              "Bases de datos SQL, PSQL y MongoDB",
-              "Desarrollo de videojuegos con Unity y Godot",
-            ]}
-          />
-          <Study
-            studyURL="https://agora.xtec.cat/iesrovira-forns/"
-            studyImage="https://agora.xtec.cat/iesrovira-forns/wp-content/uploads/usu2519/2021/07/Ins-3.jpg"
-            studyTitle="Instituto Rovira Forns"
-            studyCertificate="Bachillerato Cientifico-Tecnologico"
-            studyId="rovira-forns"
-            studyLocation="Carrer de Tierno Galván, 77, 08130 Santa Perpètua de Mogoda, Barcelona"
-            studySkills={[
-              "Matemáticas Avanzadas",
-              "Física",
-              "Tecnología Industrial",
-              "Dibujo Técnico",
-              "Castellano",
-              "Catalán",
-              "Inglés",
-              "Educación Física",
-              "Competencias del Mundo Contemporàneo",
-            ]}
-          />
-          <Study
-            studyURL="https://www.safasp.net/?lang=es"
-            studyImage="https://www.staperpetua.cat/media/repository/directori/equipaments/altres/safa_2768.jpg"
-            studyTitle="Instituto Sagrada Familia"
-            studyCertificate="Educación Secundaria Obligatoria (ESO)"
-            studyId="sagrada-familia"
-            studyLocation="Carrer de Puig i Cadafalch, 50, 08130 Santa Perpètua de Mogoda, Barcelona"
-            studySkills={[
-              "Matemáticas Básicas",
-              "Ciencias Naturales",
-              "Tecnología",
-              "Informática Básica (Scratch y Python)",
-              "Inglés",
-              "Educación Física",
-              "Castellano",
-              "Catalán",
-              "Física"
-            ]}
-          />
-        </div>
+    <div className="h-full w-full bg-black text-white">
+      <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 px-4 md:px-8">
+        <h1 className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12">
+          Mis Estudios
+        </h1>
 
-        <div className="mr-14 mt-10 md:mt-0">
-          <p className="font-montserrat text-2xl">Certificaciones Extras</p>
-          <Certificate
-            imageUrl="https://api2.sololearn.com/v2/certificates/CC-CQEREPAF/image/jpg?t=638473123349047310"
-            title="Introducción a Java"
-          />
-          <Certificate
-            imageUrl="https://api2.sololearn.com/v2/certificates/CC-X0VRVOVO/image/jpg?t=638473385034668910"
-            title="Java Intermedio"
-          />
-          <Certificate
-            imageUrl="https://api2.sololearn.com/v2/certificates/CC-KOCJKHTH/image/jpg?t=638475064215839520"
-            title="Introducción a JavaScript"
-          />
-          <Certificate
-            imageUrl="https://api2.sololearn.com/v2/certificates/CC-KL0DUTKY/image/jpg?t=638562894306235380"
-            title="JavaScript Intermediate"
-          />
+        <div className="grid grid-cols-1 gap-8">
+          {studies.map((study, index) => (
+            <StudyCard
+              key={index}
+              title={study.title}
+              institution={study.institution}
+              period={study.period}
+              description={study.description}
+              technologies={study.technologies}
+              location={study.location}
+              url={study.url}
+            />
+          ))}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Studies;

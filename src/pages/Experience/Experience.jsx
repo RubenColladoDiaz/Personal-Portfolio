@@ -10,7 +10,7 @@ function Experience() {
       period: "4 Jun 2024 - Actualidad",
       description:
         "Desarrollador FullStack en MGA Games, trabajando en el desarrollo de aplicaciones web y móviles.",
-      technologies: ["React", "Node.js", "MongoDB", "Express", "TypeScript"],
+      technologies: ["Phaser", "JavaScript", "Python", "HTML5", "Django"],
       logo: "https://mga.games/assets/img/header/logo_mga.png",
       link: "https://mga.games/",
     },
@@ -28,6 +28,9 @@ function Experience() {
       "Bootstrap",
       "Angular",
       "VUE",
+      "Laravel",
+      "Django",
+      "PHP",
     ],
     "Desarrollo Móvil": [
       "Java",

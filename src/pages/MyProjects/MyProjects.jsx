@@ -1,15 +1,26 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 function MyProjects() {
   return (
     <div className="h-full w-full bg-black text-white">
       <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 px-4 md:px-8">
-        <h1 className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
+        >
           Mis Proyectos
-        </h1>
+        </motion.h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300"
+          >
             <div className="p-6 relative z-10">
               <h2 className="text-2xl font-poppins font-medium mb-2 group-hover:text-blue-400 transition-colors">
                 Proyectos de Grado Superior
@@ -34,7 +45,9 @@ function MyProjects() {
                   Unity
                 </span>
               </div>
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 href="https://gitlab.com/2-grado-damvi"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -54,12 +67,17 @@ function MyProjects() {
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
                   />
                 </svg>
-              </a>
+              </motion.a>
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-          </div>
+          </motion.div>
 
-          <div className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300"
+          >
             <div className="p-6 relative z-10">
               <h2 className="text-2xl font-poppins font-medium mb-2 group-hover:text-blue-400 transition-colors">
                 Proyectos Personales
@@ -81,7 +99,9 @@ function MyProjects() {
                   MongoDB
                 </span>
               </div>
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 href="https://gitlab.com/personal3532051"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -101,10 +121,10 @@ function MyProjects() {
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
                   />
                 </svg>
-              </a>
+              </motion.a>
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

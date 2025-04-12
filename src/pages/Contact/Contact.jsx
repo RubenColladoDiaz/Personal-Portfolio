@@ -98,7 +98,7 @@ function Contact() {
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <a
-                href="https://www.linkedin.com/in/rubencolladodiaz/"
+                href="https://www.linkedin.com/in/ruben-collado-8aaa93211/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 p-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
@@ -112,21 +112,21 @@ function Contact() {
               </a>
 
               <a
-                href="https://github.com/RubenColladoDiaz"
+                href="https://gitlab.com/ruben.co.diaz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 p-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
               >
                 <img
-                  src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                  alt="GitHub"
+                  src="https://about.gitlab.com/images/press/logo/png/gitlab-logo-500.png"
+                  alt="GitLab"
                   className="w-8 h-8"
                 />
-                <span className="text-white">GitHub</span>
+                <span className="text-white">GitLab</span>
               </a>
 
               <a
-                href="https://twitter.com/RubenColladoD"
+                href="https://x.com/ukelchuworld"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 p-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"

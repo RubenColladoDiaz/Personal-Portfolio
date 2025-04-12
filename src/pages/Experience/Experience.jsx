@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import Skills from "../../components/Skills/Skills";
 
 function Experience() {
@@ -42,21 +43,31 @@ function Experience() {
   return (
     <div className="h-full w-full bg-black text-white">
       <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 px-4 md:px-8">
-        <h1 className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
+        >
           Mi Experiencia
-        </h1>
+        </motion.h1>
 
         <div className="grid grid-cols-1 gap-8 mb-20">
           {experiences.map((experience, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
               className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300"
             >
               <div className="p-8 relative z-10">
                 <div className="flex flex-col items-center">
-                  <a
+                  <motion.a
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     href={experience.link}
-                    className="group block mb-8 transform hover:scale-105 transition-transform duration-300"
+                    className="group block mb-8"
                   >
                     <div className="relative overflow-hidden rounded-lg">
                       <img
@@ -66,10 +77,15 @@ function Experience() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                  </a>
+                  </motion.a>
 
                   <div className="text-center space-y-6">
-                    <div className="space-y-2">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.8, delay: 0.4 }}
+                      className="space-y-2"
+                    >
                       <h2 className="text-2xl font-poppins font-medium group-hover:text-blue-400 transition-colors">
                         {experience.title}
                       </h2>
@@ -77,20 +93,28 @@ function Experience() {
                         {experience.company}
                       </h3>
                       <p className="text-gray-400">{experience.period}</p>
-                    </div>
+                    </motion.div>
 
-                    <div className="flex flex-wrap justify-center gap-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.6 }}
+                      className="flex flex-wrap justify-center gap-2"
+                    >
                       {experience.technologies.map((tech, techIndex) => (
-                        <span
+                        <motion.span
                           key={techIndex}
+                          whileHover={{ scale: 1.1 }}
                           className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm"
                         >
                           {tech}
-                        </span>
+                        </motion.span>
                       ))}
-                    </div>
+                    </motion.div>
 
-                    <a
+                    <motion.a
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       href="https://www.linkedin.com/in/ruben-collado-8aaa93211/"
                       className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-300 group"
                     >
@@ -108,11 +132,11 @@ function Experience() {
                           d="M14 5l7 7m0 0l-7 7m7-7H3"
                         />
                       </svg>
-                    </a>
+                    </motion.a>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

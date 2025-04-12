@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import StudyCard from "../../components/StudyCard/StudyCard";
 
 function Studies() {
@@ -64,24 +65,40 @@ function Studies() {
   return (
     <div className="h-full w-full bg-black text-white">
       <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 px-4 md:px-8">
-        <h1 className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-6xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
+        >
           Mis Estudios
-        </h1>
+        </motion.h1>
 
-        <div className="grid grid-cols-1 gap-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="grid grid-cols-1 gap-8"
+        >
           {studies.map((study, index) => (
-            <StudyCard
+            <motion.div
               key={index}
-              title={study.title}
-              institution={study.institution}
-              period={study.period}
-              description={study.description}
-              technologies={study.technologies}
-              location={study.location}
-              url={study.url}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 + index * 0.2 }}
+            >
+              <StudyCard
+                title={study.title}
+                institution={study.institution}
+                period={study.period}
+                description={study.description}
+                technologies={study.technologies}
+                location={study.location}
+                url={study.url}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

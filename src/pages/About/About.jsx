@@ -19,44 +19,48 @@ const About = () => {
   const age = getAge();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-60">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8 lg:p-60">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             Sobre Mí
           </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto rounded-full"></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
+            className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 md:p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
           >
             <div className="flex flex-col items-center">
               <div className="relative group">
                 <img
-                  className="w-48 h-48 rounded-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover transform group-hover:scale-105 transition-transform duration-300"
                   src="https://media.licdn.com/dms/image/v2/D4E03AQHo1wskj_5Wog/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718292624993?e=1749686400&v=beta&t=a-TYHhaHLueKNudoxCDCi8gKkpapbjc-obwu2rInSug"
                   alt="Rubén Collado"
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
 
-              <div className="mt-8 text-center space-y-4">
-                <h2 className="text-2xl font-bold">Rubén Collado Díaz</h2>
-                <div className="space-y-2">
-                  <p className="text-gray-300">
+              <div className="mt-4 md:mt-8 text-center space-y-2 md:space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold">
+                  Rubén Collado Díaz
+                </h2>
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-gray-300 text-sm md:text-base">
                     30 de Octubre de 2004 - {age} años
                   </p>
-                  <p className="text-gray-300">Barcelona, España</p>
+                  <p className="text-gray-300 text-sm md:text-base">
+                    Barcelona, España
+                  </p>
                 </div>
               </div>
             </div>
@@ -66,12 +70,12 @@ const About = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
+            className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 md:p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
           >
-            <h2 className="text-2xl font-bold mb-4 text-blue-400">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-400">
               Más sobre mí
             </h2>
-            <div className="space-y-6 text-gray-300">
+            <div className="space-y-4 md:space-y-6 text-gray-300 text-sm md:text-base">
               <p className="leading-relaxed">
                 Además de mi pasión por la programación, disfruto explorando
                 nuevas tecnologías y tendencias en el sector. Me considero una

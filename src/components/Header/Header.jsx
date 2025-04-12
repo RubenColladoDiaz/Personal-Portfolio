@@ -73,28 +73,30 @@ function Header() {
           }`}
           onClick={() => setIsMenuOpen(false)}
         >
-          <div className="absolute top-20 left-0 right-0 p-4 space-y-6">
-            {navItems.map((item) => (
+          <div className="absolute top-20 left-0 right-0 p-4">
+            <div className="bg-gray-900/95 backdrop-blur-md rounded-xl p-6 space-y-6 border border-white/10">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`block text-xl ${
+                    location.pathname === item.path
+                      ? "text-blue-400"
+                      : "text-white hover:text-gray-300"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
               <Link
-                key={item.path}
-                to={item.path}
-                className={`block text-xl ${
-                  location.pathname === item.path
-                    ? "text-blue-400"
-                    : "text-white hover:text-gray-300"
-                }`}
+                to="/contact"
+                className="block px-6 py-3 text-center bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.label}
+                Contáctame
               </Link>
-            ))}
-            <Link
-              to="/contact"
-              className="block px-6 py-3 text-center bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contáctame
-            </Link>
+            </div>
           </div>
         </div>
       </div>

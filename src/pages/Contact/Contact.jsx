@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 function Contact() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white pt-20 px-4 md:pt-40 lg:p-60 mt-8 md:mt-0">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white pt-20 pb-20 px-4 md:pt-40 lg:p-60 mt-8 md:mt-0">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

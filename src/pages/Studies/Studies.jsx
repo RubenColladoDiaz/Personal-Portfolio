@@ -7,7 +7,7 @@ function Studies() {
     {
       title: "Desarrollo de Aplicaciones Multiplataforma y Videojuegos (DAMvi)",
       institution: "Instituto Sabadell",
-      period: "2022 - 2024",
+      period: "2023 - 2025",
       description:
         "Formación en desarrollo de aplicaciones multiplataforma y videojuegos.",
       technologies: [
@@ -23,7 +23,7 @@ function Studies() {
     {
       title: "Bachillerato Cientifico-Tecnologico",
       institution: "Instituto Rovira Forns",
-      period: "2020 - 2022",
+      period: "2020 - 2023",
       description: "Formación en ciencias y tecnología.",
       technologies: [
         "Matemáticas Avanzadas",
@@ -64,7 +64,7 @@ function Studies() {
 
   return (
     <div className="h-full w-full bg-black text-white">
-      <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 pb-40 lg:pb-0 px-4 md:px-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

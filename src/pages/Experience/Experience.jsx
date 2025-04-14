@@ -2,17 +2,22 @@ import React from "react";
 import { motion } from "framer-motion";
 import Skills from "../../components/Skills/Skills";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
+import { useTranslation } from "react-i18next";
 
 function Experience() {
+  const { i18n } = useTranslation();
   const experiencesRef = useFirestore()
     .collection("experience")
-    .orderBy("period", "desc");
-  
-  const skillsRef = useFirestore()
-    .collection("skills");
-  
-  const { status: experiencesStatus, data: experiences } = useFirestoreCollectionData(experiencesRef);
-  const { status: skillsStatus, data: skillsData } = useFirestoreCollectionData(skillsRef);
+    .orderBy(`period_${i18n.language}`, "desc");
+
+  const skillsRef = useFirestore().collection("skills");
+
+  const { status: experiencesStatus, data: experiences } =
+    useFirestoreCollectionData(experiencesRef);
+  const { status: skillsStatus, data: skillsData } =
+    useFirestoreCollectionData(skillsRef);
+
+  console.log("Raw skillsData:", skillsData); // Añadido para debug
 
   if (experiencesStatus === "loading" || skillsStatus === "loading") {
     return (
@@ -22,10 +27,24 @@ function Experience() {
     );
   }
 
+  if (!experiences || experiences.length === 0) {
+    return (
+      <div className="h-full w-full bg-black text-white flex items-center justify-center">
+        <p className="text-xl">No hay datos de experiencia disponibles</p>
+      </div>
+    );
+  }
+
+  // Convertir skillsData a un objeto con la estructura correcta
   const skills = skillsData.reduce((acc, skill) => {
-    acc[skill.category] = skill.technologies;
+    console.log("Processing skill:", skill);
+    if (skill.NO_ID_FIELD) {
+      acc[skill.NO_ID_FIELD] = skill;
+    }
     return acc;
   }, {});
+
+  console.log("Processed skills:", skills);
 
   return (
     <div className="h-full w-full bg-black text-white">
@@ -36,7 +55,7 @@ function Experience() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl lg:text-left text-center font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
         >
-          Experiencia
+          {experiences[0][`page_title_${i18n.language}`]}
         </motion.h1>
 
         <div className="grid grid-cols-1 gap-8 mb-20">
@@ -74,12 +93,17 @@ function Experience() {
                       className="space-y-2"
                     >
                       <h2 className="text-2xl font-poppins font-medium group-hover:text-blue-400 transition-colors">
-                        {experience.title}
+                        {experience[`title_${i18n.language}`]}
                       </h2>
                       <h3 className="text-xl text-blue-400">
                         {experience.company}
                       </h3>
-                      <p className="text-gray-400">{experience.period}</p>
+                      <p className="text-gray-400">
+                        {experience[`period_${i18n.language}`]}
+                      </p>
+                      <p className="text-gray-400">
+                        {experience[`description_${i18n.language}`]}
+                      </p>
                     </motion.div>
 
                     <motion.div
@@ -105,7 +129,7 @@ function Experience() {
                       href="https://www.linkedin.com/in/ruben-collado-8aaa93211/"
                       className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-300 group"
                     >
-                      Más información
+                      {experience[`more_info_${i18n.language}`]}
                       <svg
                         className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
                         fill="none"

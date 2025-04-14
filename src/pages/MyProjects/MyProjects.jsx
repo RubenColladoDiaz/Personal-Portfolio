@@ -1,28 +1,21 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Project from "../../components/Project/Project";
+import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 function MyProjects() {
-  const projects = [
-    {
-      title: "Proyectos de Grado Superior",
-      description:
-        "Durante mi aprendizaje en desarrollo de aplicaciones multiplataforma y videojuegos he desarrollado multitud de proyectos los cuales han mejorado mis habilidades dia a dia utilizando nuevas herramientas.",
-      technologies: ["Java", "Python", "C#", "Unity"],
-      link: "https://gitlab.com/2-grado-damvi",
-      initialAnimation: { opacity: 0, x: -20 },
-      animationDelay: 0.2,
-    },
-    {
-      title: "Proyectos Personales",
-      description:
-        "A lo largo de mi vida, desde que desperté mi curiosidad por la tecnologia y su desarrollo, he realizado varios proyectos de forma autodidacta y con el objetivo de demostrar mis habilidades en el sector.",
-      technologies: ["React", "Node.js", "MongoDB"],
-      link: "https://gitlab.com/personal3532051",
-      initialAnimation: { opacity: 0, x: 20 },
-      animationDelay: 0.4,
-    },
-  ];
+  const projectsRef = useFirestore()
+    .collection("projects");
+  
+  const { status, data: projects } = useFirestoreCollectionData(projectsRef);
+
+  if (status === "loading") {
+    return (
+      <div className="h-full w-full bg-black text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full w-full bg-black text-white">
@@ -38,7 +31,7 @@ function MyProjects() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <Project key={index} {...project} />
+            <Project key={index} {...project} index={index} />
           ))}
         </div>
       </div>

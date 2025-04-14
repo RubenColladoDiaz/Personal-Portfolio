@@ -6,14 +6,18 @@ const Project = ({
   description,
   technologies,
   link,
-  initialAnimation = { opacity: 0, x: 0 },
-  animationDelay = 0,
+  index
 }) => {
+  const initialAnimation = {
+    opacity: 0,
+    x: index % 2 === 0 ? -20 : 20
+  };
+
   return (
     <motion.div
       initial={initialAnimation}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: animationDelay }}
+      transition={{ duration: 0.8, delay: index * 0.2 }}
       className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300"
     >
       <div className="p-6 relative z-10">
@@ -22,11 +26,11 @@ const Project = ({
         </h2>
         <p className="text-gray-400 mb-4 text-justify">{description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
-          {technologies.map((tech, index) => (
+          {technologies.map((tech, techIndex) => (
             <span
-              key={index}
+              key={techIndex}
               className={`px-3 py-1 lg:mx-0 mx-auto ${
-                index % 2 === 0
+                techIndex % 2 === 0
                   ? "bg-blue-500/10 text-blue-400"
                   : "bg-purple-500/10 text-purple-400"
               } rounded-full text-sm`}

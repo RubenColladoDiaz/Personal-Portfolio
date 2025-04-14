@@ -1,47 +1,31 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Skills from "../../components/Skills/Skills";
+import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 function Experience() {
-  const experiences = [
-    {
-      title: "Desarrollador FullStack",
-      company: "MGA Games",
-      period: "4 Jun 2024 - Actualidad",
-      description:
-        "Desarrollador FullStack en MGA Games, trabajando en el desarrollo de aplicaciones web y móviles.",
-      technologies: ["Phaser", "JavaScript", "Python", "HTML5", "Django"],
-      logo: "https://mga.games/assets/img/header/logo_mga.png",
-      link: "https://mga.games/",
-    },
-  ];
+  const experiencesRef = useFirestore()
+    .collection("experience")
+    .orderBy("period", "desc");
+  
+  const skillsRef = useFirestore()
+    .collection("skills");
+  
+  const { status: experiencesStatus, data: experiences } = useFirestoreCollectionData(experiencesRef);
+  const { status: skillsStatus, data: skillsData } = useFirestoreCollectionData(skillsRef);
 
-  const skills = {
-    "Desarrollo Web": [
-      "HTML5",
-      "CSS3",
-      "JavaScript",
-      "React",
-      "Node.js",
-      "MongoDB",
-      "TypeScript",
-      "Bootstrap",
-      "Angular",
-      "VUE",
-      "Laravel",
-      "Django",
-      "PHP",
-    ],
-    "Desarrollo Móvil": [
-      "Java",
-      "Kotlin",
-      "Android",
-      "React Native",
-      "Flutter",
-    ],
-    "Desarrollo de Videojuegos": ["Unity", "C#", "Maya", "Godot", "Phaser"],
-    Herramientas: ["Git", "Postman"],
-  };
+  if (experiencesStatus === "loading" || skillsStatus === "loading") {
+    return (
+      <div className="h-full w-full bg-black text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  const skills = skillsData.reduce((acc, skill) => {
+    acc[skill.category] = skill.technologies;
+    return acc;
+  }, {});
 
   return (
     <div className="h-full w-full bg-black text-white">

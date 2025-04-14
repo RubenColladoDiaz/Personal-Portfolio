@@ -8,10 +8,8 @@ function Header() {
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
-  const headerRef = useFirestore()
-    .collection("header")
-    .doc("main-info");
-  
+  const headerRef = useFirestore().collection("header").doc("main-info");
+
   const { status, data: headerInfo } = useFirestoreDocData(headerRef);
 
   const navItems = [
@@ -51,7 +49,7 @@ function Header() {
 
         <Link
           to="/"
-          className="absolute left-1/2 -translate-x-1/2 text-xl font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text hover:opacity-80 transition-opacity"
+          className="absolute left-1/2 -translate-x-1/2 lg:text-xl font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text hover:opacity-80 transition-opacity"
         >
           {headerInfo?.[`name_${i18n.language}`]}
         </Link>
@@ -75,21 +73,21 @@ function Header() {
 
         <div className="flex items-center space-x-4">
           <button
-            onClick={() => changeLanguage('es')}
+            onClick={() => changeLanguage("es")}
             className={`px-2 py-1 rounded-md transition-colors ${
-              i18n.language === 'es' 
-                ? 'bg-blue-500 text-white' 
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              i18n.language === "es"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
             }`}
           >
             ES
           </button>
           <button
-            onClick={() => changeLanguage('en')}
+            onClick={() => changeLanguage("en")}
             className={`px-2 py-1 rounded-md transition-colors ${
-              i18n.language === 'en' 
-                ? 'bg-blue-500 text-white' 
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              i18n.language === "en"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
             }`}
           >
             EN
@@ -126,21 +124,21 @@ function Header() {
               ))}
               <div className="flex justify-center space-x-4">
                 <button
-                  onClick={() => changeLanguage('es')}
+                  onClick={() => changeLanguage("es")}
                   className={`px-4 py-2 rounded-md transition-colors ${
-                    i18n.language === 'es' 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    i18n.language === "es"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                   }`}
                 >
                   ES
                 </button>
                 <button
-                  onClick={() => changeLanguage('en')}
+                  onClick={() => changeLanguage("en")}
                   className={`px-4 py-2 rounded-md transition-colors ${
-                    i18n.language === 'en' 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    i18n.language === "en"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                   }`}
                 >
                   EN

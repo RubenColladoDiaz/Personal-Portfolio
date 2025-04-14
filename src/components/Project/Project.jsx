@@ -1,16 +1,20 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const Project = ({
   title,
   description,
   technologies,
   link,
-  index
+  index,
+  button_text_es,
+  button_text_en,
 }) => {
+  const { i18n } = useTranslation();
   const initialAnimation = {
     opacity: 0,
-    x: index % 2 === 0 ? -20 : 20
+    x: index % 2 === 0 ? -20 : 20,
   };
 
   return (
@@ -47,7 +51,7 @@ const Project = ({
           rel="noopener noreferrer"
           className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
         >
-          Ver proyectos
+          {i18n.language === "es" ? button_text_es : button_text_en}
           <svg
             className="w-4 h-4 ml-2"
             fill="none"

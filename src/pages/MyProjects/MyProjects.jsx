@@ -2,11 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import Project from "../../components/Project/Project";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
+import { useTranslation } from "react-i18next";
 
 function MyProjects() {
-  const projectsRef = useFirestore()
-    .collection("projects");
-  
+  const { i18n } = useTranslation();
+  const projectsRef = useFirestore().collection("projects");
+
   const { status, data: projects } = useFirestoreCollectionData(projectsRef);
 
   if (status === "loading") {
@@ -26,12 +27,18 @@ function MyProjects() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl lg:text-left text-center font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
         >
-          Mis Proyectos
+          {projects[0][`page_title_${i18n.language}`]}
         </motion.h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <Project key={index} {...project} index={index} />
+            <Project
+              key={index}
+              {...project}
+              index={index}
+              title={project[`title_${i18n.language}`]}
+              description={project[`description_${i18n.language}`]}
+            />
           ))}
         </div>
       </div>

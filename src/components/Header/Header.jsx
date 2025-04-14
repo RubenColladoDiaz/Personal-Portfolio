@@ -1,16 +1,29 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useFirestore, useFirestoreDocData } from "reactfire";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+
+  const headerRef = useFirestore()
+    .collection("header")
+    .doc("main-info");
+  
+  const { status, data: headerInfo } = useFirestoreDocData(headerRef);
 
   const navItems = [
-    { path: "/myprojects", label: "Mis Proyectos" },
-    { path: "/experience", label: "Experiencia" },
-    { path: "/studies", label: "Estudios" },
-    { path: "/about", label: "Sobre mi" },
+    { path: "/myprojects", label: headerInfo?.[`projects_${i18n.language}`] },
+    { path: "/experience", label: headerInfo?.[`experience_${i18n.language}`] },
+    { path: "/studies", label: headerInfo?.[`education_${i18n.language}`] },
+    { path: "/about", label: headerInfo?.[`about_${i18n.language}`] },
   ];
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <div className="bg-black/80 backdrop-blur-sm text-white w-screen fixed top-0 p-5 font-montserrat font-light h-[60px] z-50 border-b border-white/10">
@@ -40,7 +53,7 @@ function Header() {
           to="/"
           className="absolute left-1/2 -translate-x-1/2 text-xl font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text hover:opacity-80 transition-opacity"
         >
-          RUBÉN COLLADO
+          {headerInfo?.[`name_${i18n.language}`]}
         </Link>
 
         <nav className="hidden lg:flex items-center space-x-8">
@@ -60,12 +73,34 @@ function Header() {
           ))}
         </nav>
 
-        <Link
-          to="/contact"
-          className="hidden lg:block px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
-        >
-          Contáctame
-        </Link>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => changeLanguage('es')}
+            className={`px-2 py-1 rounded-md transition-colors ${
+              i18n.language === 'es' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            }`}
+          >
+            ES
+          </button>
+          <button
+            onClick={() => changeLanguage('en')}
+            className={`px-2 py-1 rounded-md transition-colors ${
+              i18n.language === 'en' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            }`}
+          >
+            EN
+          </button>
+          <Link
+            to="/contact"
+            className="hidden lg:block px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
+          >
+            {headerInfo?.[`contact_${i18n.language}`]}
+          </Link>
+        </div>
 
         <div
           className={`lg:hidden fixed inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300 ${
@@ -89,12 +124,34 @@ function Header() {
                   {item.label}
                 </Link>
               ))}
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={() => changeLanguage('es')}
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                    i18n.language === 'es' 
+                      ? 'bg-blue-500 text-white' 
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  ES
+                </button>
+                <button
+                  onClick={() => changeLanguage('en')}
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                    i18n.language === 'en' 
+                      ? 'bg-blue-500 text-white' 
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
               <Link
                 to="/contact"
                 className="block px-6 py-3 text-center bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Contáctame
+                {headerInfo?.[`contact_${i18n.language}`]}
               </Link>
             </div>
           </div>

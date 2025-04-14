@@ -1,5 +1,6 @@
 import React from "react";
 import { useFirestore, useFirestoreDocData } from "reactfire";
+import { useTranslation } from "react-i18next";
 
 function getAge() {
   const today = new Date();
@@ -8,6 +9,7 @@ function getAge() {
 }
 
 function Home() {
+  const { t, i18n } = useTranslation();
   const homeRef = useFirestore()
     .collection("home")
     .doc("main-info");
@@ -39,10 +41,10 @@ function Home() {
 
         <div className="space-y-4">
           <h1 className="lg:text-8xl text-4xl md:text-9xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text animate-fade-in">
-            {homeInfo.name}.
+            {homeInfo[`name_${i18n.language}`] || homeInfo.name_es}.
           </h1>
           <p className="lg:text-4xl text-xl font-montserrat text-gray-300 animate-slide-up">
-            {homeInfo.title}
+            {homeInfo[`title_${i18n.language}`] || homeInfo.title_es}
           </p>
         </div>
       </div>

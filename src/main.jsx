@@ -5,6 +5,7 @@ import { FirebaseAppProvider } from 'reactfire'
 import './index.css'
 import App from './App.jsx'
 import { app } from './firebase/config'
+import './i18n'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

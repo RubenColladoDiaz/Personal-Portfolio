@@ -18,7 +18,7 @@ const StudyCard = ({
   return (
     <div className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300">
       <div className="p-8">
-        <div className="space-y-6">
+        <div className="space-y-6 text-center lg:text-left">
           <div className="space-y-2">
             <h2 className="text-2xl font-poppins font-medium text-blue-400">
               {title}
@@ -28,7 +28,7 @@ const StudyCard = ({
             <p className="text-gray-400">{description}</p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
             {technologies.map((tech, index) => (
               <span
                 key={index}

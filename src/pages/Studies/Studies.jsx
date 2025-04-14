@@ -22,12 +22,12 @@ function Studies() {
 
   return (
     <div className="h-full w-full bg-black text-white lg:pb-40">
-      <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 pb-40 lg:pb-0 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto h-full flex flex-col pt-40 pb-40 lg:pb-0 px-4 md:px-8 items-center lg:items-start">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-6xl lg:text-left text-center font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
+          className="text-4xl md:text-6xl text-center lg:text-left font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
         >
           {studies[0][`page_title_${i18n.language}`]}
         </motion.h1>
@@ -36,7 +36,7 @@ function Studies() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 gap-8"
+          className="grid grid-cols-1 gap-8 mx-auto lg:mx-0"
         >
           {studies.map((study, index) => (
             <motion.div

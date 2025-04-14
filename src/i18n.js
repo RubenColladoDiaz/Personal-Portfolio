@@ -1,10 +1,11 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { getFirestore } from '@firebase/firestore';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import { app } from './firebase/config';
 
-const db = getFirestore(app);
+const db = firebase.firestore();
 
 // Función para cargar traducciones desde Firebase
 const loadTranslations = async (lng) => {

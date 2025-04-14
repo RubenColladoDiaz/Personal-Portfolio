@@ -23,10 +23,10 @@ function Home() {
         </div>
 
         <div className="space-y-4">
-          <h1 className="text-8xl md:text-9xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text animate-fade-in">
+          <h1 className="lg:text-8xl text-4xl md:text-9xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text animate-fade-in">
             Rubén Collado.
           </h1>
-          <p className="text-4xl md:text-5xl font-montserrat text-gray-300 animate-slide-up">
+          <p className="lg:text-4xl text-xl font-montserrat text-gray-300 animate-slide-up">
             FullStack Developer
           </p>
         </div>

@@ -2,12 +2,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import StudyCard from "../../components/StudyCard/StudyCard";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
+import { useTranslation } from "react-i18next";
 
 function Studies() {
+  const { i18n } = useTranslation();
   const studiesRef = useFirestore()
     .collection("studies")
-    .orderBy("period", "desc");
-  
+    .orderBy(`period_${i18n.language}`, "desc");
+
   const { status, data: studies } = useFirestoreCollectionData(studiesRef);
 
   if (status === "loading") {
@@ -27,7 +29,7 @@ function Studies() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl lg:text-left text-center font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-12"
         >
-          Estudios
+          {studies[0][`page_title_${i18n.language}`]}
         </motion.h1>
 
         <motion.div
@@ -44,13 +46,15 @@ function Studies() {
               transition={{ duration: 0.8, delay: 0.4 + index * 0.2 }}
             >
               <StudyCard
-                title={study.title}
+                title={study[`title_${i18n.language}`]}
                 institution={study.institution}
-                period={study.period}
-                description={study.description}
-                technologies={study.technologies}
+                period={study[`period_${i18n.language}`]}
+                description={study[`description_${i18n.language}`]}
+                technologies={study[`technologies_${i18n.language}`]}
                 location={study.location}
                 url={study.url}
+                visit_website_es={study.visit_website_es}
+                visit_website_en={study.visit_website_en}
               />
             </motion.div>
           ))}

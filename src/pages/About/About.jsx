@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useFirestore, useFirestoreDocData } from "reactfire";
+import { useTranslation } from "react-i18next";
 
 function getAge() {
   const birthDate = new Date("2004-10-30");
@@ -17,11 +18,10 @@ function getAge() {
 }
 
 const About = () => {
+  const { i18n } = useTranslation();
   const age = getAge();
-  const aboutRef = useFirestore()
-    .collection("about")
-    .doc("personal-info");
-  
+  const aboutRef = useFirestore().collection("about").doc("personal-info");
+
   const { status, data: aboutInfo } = useFirestoreDocData(aboutRef);
 
   if (status === "loading") {
@@ -42,7 +42,7 @@ const About = () => {
           className="text-center mb-8 md:mb-12"
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-            Sobre Mí
+            {aboutInfo[`page_title_${i18n.language}`]}
           </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto rounded-full"></div>
         </motion.div>
@@ -70,10 +70,11 @@ const About = () => {
                 </h2>
                 <div className="space-y-1 md:space-y-2">
                   <p className="text-gray-300 text-sm md:text-base">
-                    {aboutInfo.birthDate} - {age} años
+                    {aboutInfo[`birthDate_${i18n.language}`]} - {age}{" "}
+                    {i18n.language === "es" ? "años" : "years old"}
                   </p>
                   <p className="text-gray-300 text-sm md:text-base">
-                    {aboutInfo.location}
+                    {aboutInfo[`location_${i18n.language}`]}
                   </p>
                 </div>
               </div>
@@ -87,14 +88,16 @@ const About = () => {
             className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 md:p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
           >
             <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-400 text-center lg:text-left">
-              Más sobre mí
+              {i18n.language === "es" ? "Más sobre mí" : "More about me"}
             </h2>
             <div className="space-y-4 md:space-y-6 text-gray-300 text-sm md:text-base text-justify">
-              {aboutInfo.description.map((paragraph, index) => (
-                <p key={index} className="leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
+              {aboutInfo[`description_${i18n.language}`].map(
+                (paragraph, index) => (
+                  <p key={index} className="leading-relaxed">
+                    {paragraph}
+                  </p>
+                ),
+              )}
             </div>
           </motion.div>
         </div>

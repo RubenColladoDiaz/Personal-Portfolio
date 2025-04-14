@@ -82,8 +82,8 @@ function Header() {
             onClick={() => changeLanguage("es")}
             className={`px-2 py-1 rounded-md transition-colors ${
               i18n.language === "es"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                ? "text-blue-400"
+                : "text-gray-300 hover:text-white"
             }`}
           >
             ES
@@ -92,8 +92,8 @@ function Header() {
             onClick={() => changeLanguage("en")}
             className={`px-2 py-1 rounded-md transition-colors ${
               i18n.language === "en"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                ? "text-blue-400"
+                : "text-gray-300 hover:text-white"
             }`}
           >
             EN
@@ -133,8 +133,8 @@ function Header() {
                   onClick={() => changeLanguage("es")}
                   className={`px-4 py-2 rounded-md transition-colors ${
                     i18n.language === "es"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                      ? "text-blue-400"
+                      : "text-gray-300 hover:text-white"
                   }`}
                 >
                   ES
@@ -143,8 +143,8 @@ function Header() {
                   onClick={() => changeLanguage("en")}
                   className={`px-4 py-2 rounded-md transition-colors ${
                     i18n.language === "en"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                      ? "text-blue-400"
+                      : "text-gray-300 hover:text-white"
                   }`}
                 >
                   EN

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useFirestore, useFirestoreDocData } from "reactfire";
@@ -7,6 +7,12 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    if (!i18n.language) {
+      i18n.changeLanguage("es");
+    }
+  }, [i18n]);
 
   const headerRef = useFirestore().collection("header").doc("main-info");
 

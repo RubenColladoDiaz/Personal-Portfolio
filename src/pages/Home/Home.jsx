@@ -1,4 +1,5 @@
 import React from "react";
+import { useFirestore, useFirestoreDocData } from "reactfire";
 
 function getAge() {
   const today = new Date();
@@ -7,6 +8,20 @@ function getAge() {
 }
 
 function Home() {
+  const homeRef = useFirestore()
+    .collection("home")
+    .doc("main-info");
+  
+  const { status, data: homeInfo } = useFirestoreDocData(homeRef);
+
+  if (status === "loading") {
+    return (
+      <div className="h-[calc(100vh-60px)] w-full flex items-center justify-center text-white relative overflow-hidden mt-[60px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   let age = getAge();
   return (
     <div className="h-[calc(100vh-60px)] w-full flex flex-col items-center justify-center text-white relative overflow-hidden mt-[60px]">
@@ -24,10 +39,10 @@ function Home() {
 
         <div className="space-y-4">
           <h1 className="lg:text-8xl text-4xl md:text-9xl font-poppins font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text animate-fade-in">
-            Rubén Collado.
+            {homeInfo.name}.
           </h1>
           <p className="lg:text-4xl text-xl font-montserrat text-gray-300 animate-slide-up">
-            FullStack Developer
+            {homeInfo.title}
           </p>
         </div>
       </div>

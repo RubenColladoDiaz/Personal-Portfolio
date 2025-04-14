@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useFirestore, useFirestoreDocData } from "reactfire";
 
 function getAge() {
   const birthDate = new Date("2004-10-30");
@@ -17,6 +18,19 @@ function getAge() {
 
 const About = () => {
   const age = getAge();
+  const aboutRef = useFirestore()
+    .collection("about")
+    .doc("personal-info");
+  
+  const { status, data: aboutInfo } = useFirestoreDocData(aboutRef);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8 pt-28 lg:p-60 pb-28">
@@ -44,7 +58,7 @@ const About = () => {
               <div className="relative group">
                 <img
                   className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-                  src="https://media.licdn.com/dms/image/v2/D4E03AQHo1wskj_5Wog/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718292624993?e=1749686400&v=beta&t=a-TYHhaHLueKNudoxCDCi8gKkpapbjc-obwu2rInSug"
+                  src={aboutInfo.photo}
                   alt="Rubén Collado"
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -52,14 +66,14 @@ const About = () => {
 
               <div className="mt-4 md:mt-8 text-center space-y-2 md:space-y-4">
                 <h2 className="text-xl md:text-2xl font-bold">
-                  Rubén Collado Díaz
+                  {aboutInfo.name}
                 </h2>
                 <div className="space-y-1 md:space-y-2">
                   <p className="text-gray-300 text-sm md:text-base">
-                    30 de Octubre de 2004 - {age} años
+                    {aboutInfo.birthDate} - {age} años
                   </p>
                   <p className="text-gray-300 text-sm md:text-base">
-                    Barcelona, España
+                    {aboutInfo.location}
                   </p>
                 </div>
               </div>
@@ -76,22 +90,11 @@ const About = () => {
               Más sobre mí
             </h2>
             <div className="space-y-4 md:space-y-6 text-gray-300 text-sm md:text-base text-justify">
-              <p className="leading-relaxed">
-                Además de mi pasión por la programación, disfruto explorando
-                nuevas tecnologías y tendencias en el sector. Me considero una
-                persona curiosa y autodidacta, siempre buscando aprender algo
-                nuevo.
-              </p>
-              <p className="leading-relaxed">
-                En mi tiempo libre, me gusta mantenerme activo practicando
-                deporte. También disfruto de los videojuegos y el desarrollo, lo
-                que me ayuda a mantener una perspectiva creativa en mi trabajo.
-              </p>
-              <p className="leading-relaxed">
-                Mi objetivo es seguir creciendo profesionalmente mientras
-                contribuyo a proyectos innovadores que tengan un impacto en la
-                sociedad.
-              </p>
+              {aboutInfo.description.map((paragraph, index) => (
+                <p key={index} className="leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </motion.div>
         </div>

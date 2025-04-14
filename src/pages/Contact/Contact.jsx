@@ -1,7 +1,27 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useFirestore, useFirestoreDocData } from "reactfire";
 
 function Contact() {
+  const contactInfoRef = useFirestore()
+    .collection("contact")
+    .doc("contact-info");
+  
+  const socialLinksRef = useFirestore()
+    .collection("contact")
+    .doc("social-links");
+  
+  const { status: contactStatus, data: contactInfo } = useFirestoreDocData(contactInfoRef);
+  const { status: socialStatus, data: socialLinks } = useFirestoreDocData(socialLinksRef);
+
+  if (contactStatus === "loading" || socialStatus === "loading") {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white pt-20 pb-20 px-4 md:pt-40 lg:p-60 mt-8 md:mt-0">
       <div className="max-w-6xl mx-auto">
@@ -47,12 +67,12 @@ function Contact() {
                 <div>
                   <p className="text-gray-400 text-sm md:text-base">Email</p>
                   <a
-                    href="https://mail.google.com/mail/?view=cm&fs=1&to=ruben.co.diaz@gmail.com"
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${contactInfo.email}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-300 transition-colors text-sm md:text-base"
                   >
-                    ruben.co.diaz@gmail.com
+                    {contactInfo.email}
                   </a>
                 </div>
               </div>
@@ -84,7 +104,7 @@ function Contact() {
                     Ubicación
                   </p>
                   <p className="text-white text-sm md:text-base">
-                    Barcelona, España
+                    {contactInfo.location}
                   </p>
                 </div>
               </div>
@@ -102,7 +122,7 @@ function Contact() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               <a
-                href="https://www.linkedin.com/in/ruben-collado-8aaa93211/"
+                href={socialLinks.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 p-3 md:p-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
@@ -118,7 +138,7 @@ function Contact() {
               </a>
 
               <a
-                href="https://gitlab.com/ruben.co.diaz"
+                href={socialLinks.gitlab}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 p-3 md:p-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
@@ -132,7 +152,7 @@ function Contact() {
               </a>
 
               <a
-                href="https://x.com/ukelchuworld"
+                href={socialLinks.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 p-3 md:p-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
@@ -154,7 +174,7 @@ function Contact() {
         </p>
         <a
           className="text-white hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 transition-all duration-300"
-          href="https://gitlab.com/personal3532051/portrafoliofinal"
+          href={socialLinks.portfolio}
         >
           Enlace al Proyecto
         </a>

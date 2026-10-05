@@ -1,74 +1,60 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next";
+import { useLang } from "../../lib/lang";
+import { EASE } from "../../lib/clock";
+import { Arrow, splitTitle } from "../Bits";
+import { ProjectIcon } from "./ProjectCard";
 
-const Project = ({
-  title,
-  description,
-  technologies,
-  link,
-  index,
-  button_text_es,
-  button_text_en,
-}) => {
-  const { i18n } = useTranslation();
-  const initialAnimation = {
-    opacity: 0,
-    x: index % 2 === 0 ? -20 : 20,
-  };
+const item = (i) => ({
+  initial: { opacity: 0, y: 10, filter: "blur(4px)" },
+  animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: EASE, delay: 0.1 + i * 0.05 } },
+  exit: { opacity: 0, y: -6, filter: "blur(4px)", transition: { duration: 0.2, ease: EASE } },
+});
+
+// Contenido del panel de un proyecto.
+const Project = ({ project }) => {
+  const { t, pick } = useLang();
+  const [title, detail] = splitTitle(pick(project, "title"));
+  const techs = project.technologies || [];
 
   return (
-    <motion.div
-      initial={initialAnimation}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: index * 0.2 }}
-      className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10 hover:border-blue-500/50 transition-all duration-300"
-    >
-      <div className="p-6 relative z-10">
-        <h2 className="text-2xl lg:text-left text-center font-poppins font-medium mb-2 group-hover:text-blue-400 transition-colors">
-          {title}
-        </h2>
-        <p className="text-gray-400 mb-4 text-justify">{description}</p>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {technologies.map((tech, techIndex) => (
-            <span
-              key={techIndex}
-              className={`px-3 py-1 lg:mx-0 mx-auto ${
-                techIndex % 2 === 0
-                  ? "bg-blue-500/10 text-blue-400"
-                  : "bg-purple-500/10 text-purple-400"
-              } rounded-full text-sm`}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+    <motion.article initial="initial" animate="animate" exit="exit">
+      <motion.div {...item(0)}>
+        <ProjectIcon project={project} size="lg" />
+      </motion.div>
+
+      <motion.h2 {...item(1)} className="mt-8 text-[1.75rem] font-medium leading-[1.1] tracking-[-0.03em]">
+        {title}
+      </motion.h2>
+      {detail && (
+        <motion.p {...item(1)} className="mt-1 text-muted">
+          {detail}
+        </motion.p>
+      )}
+
+      <motion.p {...item(2)} className="mt-6 text-[1.05rem] leading-relaxed text-fg/75">
+        {pick(project, "description")}
+      </motion.p>
+
+      <motion.dl {...item(3)} className="mt-8 grid grid-cols-[5rem_1fr] gap-y-3 border-t border-fg/10 pt-6 text-[14px]">
+        <dt className="text-muted">{t.year}</dt>
+        <dd>{project.year}</dd>
+        <dt className="text-muted">{t.stack}</dt>
+        <dd>{techs.join(", ")}</dd>
+      </motion.dl>
+
+      {project.link && (
         <motion.a
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          href={link}
+          {...item(4)}
+          href={project.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+          className="group mt-10 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-[14px] font-medium text-bg transition-colors duration-300 hover:bg-accent"
         >
-          {i18n.language === "es" ? button_text_es : button_text_en}
-          <svg
-            className="w-4 h-4 ml-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            />
-          </svg>
+          {pick(project, "button_text") || t.open}
+          <Arrow className="w-3.5 transition-transform duration-500 ease-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </motion.a>
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-    </motion.div>
+      )}
+    </motion.article>
   );
 };
 

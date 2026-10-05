@@ -1,167 +1,189 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useFirestore, useFirestoreDocData } from "reactfire";
+import { AnimatePresence, motion } from "framer-motion";
+import { useLang } from "../../lib/lang";
+import { useTheme } from "../../lib/theme";
+import { ROUTES, routeLabel } from "../../lib/routes";
+import { useHeaderInfo } from "../../lib/data";
+import { EASE } from "../../lib/clock";
+import { useLenis } from "../SmoothScroll";
+import { LocalTime } from "../Bits";
+
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+  const { t } = useLang();
+  return (
+    <button
+      onClick={toggle}
+      aria-label={theme === "dark" ? t.themeToDay : t.themeToNight}
+      className="group flex h-6 w-6 items-center justify-center"
+    >
+      <span className="block transition-transform duration-500 ease-expo group-hover:scale-125">
+        <span
+          className="block h-3 w-3 rounded-full border border-current transition-transform duration-1000 ease-expo"
+          style={{
+            background: "linear-gradient(90deg, currentColor 50%, transparent 50%)",
+            transform: `rotate(${theme === "dark" ? 0 : 180}deg)`,
+          }}
+        />
+      </span>
+    </button>
+  );
+}
+
+function LangSwitch() {
+  const { lang, setLang } = useLang();
+  return (
+    <span className="flex items-center gap-1">
+      {["es", "en"].map((l, i) => (
+        <span key={l} className="flex items-center gap-1">
+          {i > 0 && <span className="opacity-30">/</span>}
+          <button
+            onClick={() => setLang(l)}
+            aria-pressed={lang === l}
+            className={`transition-opacity duration-300 ${
+              lang === l ? "opacity-100" : "opacity-40 hover:opacity-100"
+            }`}
+          >
+            {l.toUpperCase()}
+          </button>
+        </span>
+      ))}
+    </span>
+  );
+}
 
 function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
-  const { t, i18n } = useTranslation();
+  const { pathname } = useLocation();
+  const { lang, t } = useLang();
+  const headerInfo = useHeaderInfo();
+  const lenis = useLenis();
+  const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  const items = ROUTES.slice(1).map((r) => ({
+    ...r,
+    label: routeLabel(r.key, lang, headerInfo),
+  }));
+
+  // Se esconde al bajar y vuelve al subir.
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) < 8) return;
+      setHidden(y > last && y > 160);
+      last = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
-    if (!i18n.language) {
-      i18n.changeLanguage("es");
-    }
-  }, [i18n]);
+    setOpen(false);
+    setHidden(false);
+  }, [pathname]);
 
-  const headerRef = useFirestore().collection("header").doc("main-info");
-
-  const { status, data: headerInfo } = useFirestoreDocData(headerRef);
-
-  const navItems = [
-    { path: "/myprojects", label: headerInfo?.[`projects_${i18n.language}`] },
-    { path: "/experience", label: headerInfo?.[`experience_${i18n.language}`] },
-    { path: "/studies", label: headerInfo?.[`education_${i18n.language}`] },
-    { path: "/about", label: headerInfo?.[`about_${i18n.language}`] },
-  ];
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
+  useEffect(() => {
+    if (!lenis) return;
+    if (open) lenis.stop();
+    else lenis.start();
+  }, [open, lenis]);
 
   return (
-    <div className="bg-black/80 backdrop-blur-sm text-white w-screen fixed top-0 p-5 font-montserrat font-light h-[60px] z-50 border-b border-white/10">
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-between">
-        <button
-          className="lg:hidden relative z-50 p-2 hover:bg-white/10 rounded-lg transition-colors"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d={
-                isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
-              }
-            />
-          </svg>
-        </button>
-
-        <Link
-          to="/"
-          className="absolute left-1/2 -translate-x-1/2 lg:text-xl font-medium bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text hover:opacity-80 transition-opacity"
-        >
-          {headerInfo?.[`name_${i18n.language}`]}
-        </Link>
-
-        <nav className="hidden lg:flex items-center space-x-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`relative group transition-colors ${
-                location.pathname === item.path
-                  ? "text-blue-400"
-                  : "text-white hover:text-gray-300"
-              }`}
-            >
-              {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 transition-all group-hover:w-full" />
+    <>
+      <header
+        className="fixed inset-x-0 top-0 z-[100] text-[13px] text-white mix-blend-difference transition-transform duration-700 ease-expo"
+        style={{ transform: hidden && !open ? "translateY(-110%)" : "none" }}
+      >
+        <div className="wrap flex items-center justify-between py-5">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="font-medium tracking-tight">
+              Rubén Collado
             </Link>
-          ))}
-        </nav>
+            <LocalTime className="hidden opacity-50 md:inline" />
+          </div>
 
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={() => changeLanguage("es")}
-            className={`px-2 py-1 rounded-md transition-colors ${
-              i18n.language === "es"
-                ? "text-blue-400"
-                : "text-gray-300 hover:text-white"
-            }`}
-          >
-            ES
-          </button>
-          <button
-            onClick={() => changeLanguage("en")}
-            className={`px-2 py-1 rounded-md transition-colors ${
-              i18n.language === "en"
-                ? "text-blue-400"
-                : "text-gray-300 hover:text-white"
-            }`}
-          >
-            EN
-          </button>
-          <Link
-            to="/contact"
-            className="hidden lg:block px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
-          >
-            {headerInfo?.[`contact_${i18n.language}`]}
-          </Link>
-        </div>
-
-        <div
-          className={`lg:hidden fixed inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300 ${
-            isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-          onClick={() => setIsMenuOpen(false)}
-        >
-          <div className="absolute top-20 left-0 right-0 p-4">
-            <div className="bg-gray-900/95 backdrop-blur-md rounded-xl p-6 space-y-6 border border-white/10">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`block text-xl ${
-                    location.pathname === item.path
-                      ? "text-blue-400"
-                      : "text-white hover:text-gray-300"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <div className="flex justify-center space-x-4">
-                <button
-                  onClick={() => changeLanguage("es")}
-                  className={`px-4 py-2 rounded-md transition-colors ${
-                    i18n.language === "es"
-                      ? "text-blue-400"
-                      : "text-gray-300 hover:text-white"
-                  }`}
-                >
-                  ES
-                </button>
-                <button
-                  onClick={() => changeLanguage("en")}
-                  className={`px-4 py-2 rounded-md transition-colors ${
-                    i18n.language === "en"
-                      ? "text-blue-400"
-                      : "text-gray-300 hover:text-white"
-                  }`}
-                >
-                  EN
-                </button>
-              </div>
-              <Link
-                to="/contact"
-                className="block px-6 py-3 text-center bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:opacity-90 transition-opacity"
-                onClick={() => setIsMenuOpen(false)}
+          <div className="flex items-center gap-8">
+            <nav className="hidden items-center gap-6 lg:flex">
+              {items.map((item) => {
+                const active = pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`relative flex items-center gap-1.5 transition-opacity duration-300 ${
+                      active ? "opacity-100" : "opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    {active && (
+                      <motion.span
+                        layoutId="nav-active"
+                        className="h-1 w-1 rounded-full bg-current"
+                        transition={{ duration: 0.6, ease: EASE }}
+                      />
+                    )}
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="flex items-center gap-5">
+              <LangSwitch />
+              <ThemeToggle />
+              <button
+                onClick={() => setOpen((o) => !o)}
+                aria-expanded={open}
+                className="lg:hidden"
               >
-                {headerInfo?.[`contact_${i18n.language}`]}
-              </Link>
+                {open ? t.close : t.menu}
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-[90] bg-bg/95 backdrop-blur-md lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.4, ease: EASE } }}
+            exit={{ opacity: 0, transition: { duration: 0.3, ease: EASE } }}
+          >
+            <nav className="wrap flex h-full flex-col justify-between pb-8 pt-28">
+              <div className="flex flex-col gap-1">
+                {ROUTES.map((r, i) => {
+                  const active = pathname === r.path;
+                  return (
+                    <motion.div
+                      key={r.path}
+                      initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: EASE, delay: 0.05 + i * 0.05 } }}
+                    >
+                      <Link
+                        to={r.path}
+                        onClick={() => setOpen(false)}
+                        className={`flex items-center gap-3 text-3xl font-medium tracking-tight ${
+                          active ? "text-fg" : "text-fg/45"
+                        }`}
+                      >
+                        {routeLabel(r.key, lang, headerInfo)}
+                        {active && <span className="h-1.5 w-1.5 rounded-full bg-accent" />}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              <div className="meta flex justify-between">
+                <LocalTime seconds />
+                <span>Barcelona</span>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 

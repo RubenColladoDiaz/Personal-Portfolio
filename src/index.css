@@ -1,51 +1,199 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ───────── Tokens ───────── */
+
+:root {
+  --bg: 14 14 13;
+  --fg: 236 234 229;
+  --muted: 130 128 122;
+  --accent: 255 92 33;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: 244 243 240;
+  --fg: 21 21 20;
+  --muted: 118 116 110;
+  --accent: 230 72 18;
+  color-scheme: light;
+}
+
+/* ───────── Base ───────── */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 body {
-  background-color: rgb(16, 16, 16);
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-x: hidden;
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
+::selection {
+  background: rgb(var(--accent));
+  color: rgb(var(--bg));
+}
+
+:focus-visible {
+  outline: 1px solid rgb(var(--accent));
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--bg));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--fg) / 0.2);
+  border-radius: 6px;
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(20px, 4vw, 56px);
+    padding-right: clamp(20px, 4vw, 56px);
   }
-  50% {
-    transform: translateY(-20px);
+  .meta {
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgb(var(--muted));
+    font-variant-numeric: tabular-nums;
+  }
+  .title {
+    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+  }
+  .hairline {
+    height: 1px;
+    background: rgb(var(--fg) / 0.1);
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Enlace con subrayado que se dibuja al pasar */
+.link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  transition: background-size 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link:hover,
+.group:hover .link {
+  background-size: 100% 1px;
+  background-position: 0% 100%;
 }
 
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Enlace dentro de una frase: subrayado fino siempre visible */
+.inline-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: rgb(var(--fg) / 0.3);
+  transition: text-decoration-color 0.3s, color 0.3s;
+}
+.inline-link:hover {
+  color: rgb(var(--accent));
+  text-decoration-color: rgb(var(--accent));
 }
 
-.animate-fade-in {
-  animation: fade-in 1s ease-out forwards;
+/* Al pasar, la palabra se estrecha (eje de anchura de la fuente) */
+.stretch {
+  font-variation-settings: "wdth" 100;
+  transition: font-variation-settings 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stretch:hover,
+.group:hover .stretch {
+  font-variation-settings: "wdth" 76;
 }
 
-.animate-slide-up {
-  animation: slide-up 1s ease-out 0.5s forwards;
-  opacity: 0;
+/* Máscara para revelar texto sin cortar acentos ni descendentes */
+.mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.12em 0.04em 0.14em;
+  margin: -0.12em -0.04em -0.14em;
+}
+.mask-inline {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.12em 0.02em 0.14em;
+  margin: -0.12em -0.02em -0.14em;
+}
+
+/* Punto "en directo" */
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgb(var(--accent));
+}
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  75%, 100% { transform: scale(3); opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0.2; }
+}
+
+/* ───────── Cambio de tema con View Transitions ───────── */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

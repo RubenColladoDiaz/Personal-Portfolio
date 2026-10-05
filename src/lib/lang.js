@@ -1,0 +1,106 @@
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
+const copy = {
+  es: {
+    menu: "Menú",
+    close: "Cerrar",
+    home: "Inicio",
+    next: "Siguiente",
+    scroll: "Desliza",
+    backToTop: "Volver arriba",
+    loading: "Cargando",
+    themeToDay: "Cambiar a modo día",
+    themeToNight: "Cambiar a modo noche",
+    all: "Todo",
+    projects: "Proyectos",
+    open: "Abrir",
+    year: "Año",
+    recent: "Algunos proyectos",
+    seeAll: (n) => `Ver los ${n}`,
+    filter: "Filtrar por",
+    more: (n) => `+${n} más`,
+    fewer: "Menos",
+    previous: "Anterior",
+    following: "Siguiente",
+    current: "En curso",
+    now: "Hoy",
+    stack: "Stack",
+    toolkit: "Herramientas con las que trabajo",
+    subjects: "Contenido",
+    years: "años",
+    born: "Nacimiento",
+    base: "Ubicación",
+    age: "Edad",
+    birthdayIn: (n) => (n === 1 ? "mañana cumplo uno más" : `faltan ${n} días para el siguiente`),
+    birthdayToday: "hoy es mi cumpleaños",
+    copied: "Copiado al portapapeles",
+    clickToCopy: "Clic para copiar",
+    talk: "¿Hablamos?",
+    writeTo: "Escríbeme a",
+    notFound: "Esta página no existe.",
+    goHome: "Volver al inicio",
+    comeBack: "¡Vuelve! — Rubén Collado",
+    selectHint: "Pasa por un nombre para ver el proyecto",
+    showing: (n) => `${n} proyectos`,
+  },
+  en: {
+    menu: "Menu",
+    close: "Close",
+    home: "Home",
+    next: "Next",
+    scroll: "Scroll",
+    backToTop: "Back to top",
+    loading: "Loading",
+    themeToDay: "Switch to day mode",
+    themeToNight: "Switch to night mode",
+    all: "All",
+    projects: "Projects",
+    open: "Open",
+    year: "Year",
+    recent: "Selected projects",
+    seeAll: (n) => `See all ${n}`,
+    filter: "Filter by",
+    more: (n) => `+${n} more`,
+    fewer: "Fewer",
+    previous: "Previous",
+    following: "Next",
+    current: "Ongoing",
+    now: "Now",
+    stack: "Stack",
+    toolkit: "Tools I work with",
+    subjects: "Covered",
+    years: "years",
+    born: "Born",
+    base: "Based in",
+    age: "Age",
+    birthdayIn: (n) => (n === 1 ? "one more tomorrow" : `${n} days until the next one`),
+    birthdayToday: "it's my birthday today",
+    copied: "Copied to clipboard",
+    clickToCopy: "Click to copy",
+    talk: "Shall we talk?",
+    writeTo: "Write to me at",
+    notFound: "This page doesn't exist.",
+    goHome: "Back home",
+    comeBack: "Come back! — Rubén Collado",
+    selectHint: "Hover a name to see the project",
+    showing: (n) => `${n} projects`,
+  },
+};
+
+export function useLang() {
+  const { i18n } = useTranslation();
+  const lang = i18n.language?.toLowerCase().startsWith("en") ? "en" : "es";
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  return {
+    lang,
+    t: copy[lang],
+    setLang: (l) => i18n.changeLanguage(l),
+    // Lee `campo_es` / `campo_en` de un documento de Firestore
+    pick: (doc, key) => doc?.[`${key}_${lang}`] ?? doc?.[`${key}_es`],
+  };
+}

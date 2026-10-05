@@ -1,108 +1,219 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { useFirestore, useFirestoreDocData } from "reactfire";
-import { useTranslation } from "react-i18next";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Page, { Loader } from "../../components/Page";
+import Footer from "../../components/Footer";
+import FieldCanvas from "../../components/FieldCanvas";
+import { Fade, SplitText, useEnter } from "../../components/Reveal";
+import { useCollection, useDoc } from "../../lib/data";
+import { GITHUB_USER } from "../../lib/github";
+import { ONGOING } from "../../lib/dates";
+import { Arrow } from "../../components/Bits";
+import { useLang } from "../../lib/lang";
+import { EASE_IN_OUT } from "../../lib/clock";
 
-function getAge() {
-  const birthDate = new Date("2004-10-30");
+// La foto va en /public: los enlaces de LinkedIn caducan.
+const LOCAL_PHOTO = "/ruben-collado.jpg";
+const BIRTH = new Date(2004, 9, 30);
+const YEAR_MS = 365.2425 * 864e5;
+
+// Edad con nueve decimales, avanzando en directo.
+function LiveAge() {
+  const { lang } = useLang();
+  const ref = useRef(null);
+
+  useEffect(() => {
+    let frame;
+    const tick = () => {
+      const value = ((Date.now() - BIRTH.getTime()) / YEAR_MS).toFixed(9);
+      if (ref.current) ref.current.textContent = lang === "es" ? value.replace(".", ",") : value;
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [lang]);
+
+  return <span ref={ref} className="tabular-nums" />;
+}
+
+function daysToBirthday() {
   const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (
-    monthDiff < 0 ||
-    (monthDiff === 0 && today.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-  return age;
+  today.setHours(0, 0, 0, 0);
+  let next = new Date(today.getFullYear(), BIRTH.getMonth(), BIRTH.getDate());
+  if (next < today) next = new Date(today.getFullYear() + 1, BIRTH.getMonth(), BIRTH.getDate());
+  return Math.round((next - today) / 864e5);
+}
+
+// Prueba cada foto en orden; si ninguna carga, muestra el campo de puntos.
+function Portrait({ sources, alt }) {
+  const ref = useRef(null);
+  const start = useEnter(ref, 0.2);
+  const [attempt, setAttempt] = useState(0);
+  const list = sources.filter(Boolean);
+  const src = list[attempt];
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+  const hasPhoto = Boolean(src);
+
+  return (
+    <motion.div
+      ref={ref}
+      className="group relative aspect-square w-full overflow-hidden rounded-full bg-fg/[0.04]"
+      initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
+      animate={start !== null ? { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 1.3, ease: EASE_IN_OUT, delay: start } } : undefined}
+    >
+      {hasPhoto ? (
+        <motion.img
+          src={src}
+          alt={alt}
+          onError={() => setAttempt((a) => a + 1)}
+          style={{ y }}
+          className="absolute -top-[6%] left-0 h-[112%] w-full object-cover"
+        />
+      ) : (
+        <>
+          <FieldCanvas className="absolute inset-0" />
+          <span className="pointer-events-none absolute bottom-4 left-4 text-sm font-medium">RC</span>
+        </>
+      )}
+    </motion.div>
+  );
+}
+
+// Párrafo cuyas palabras se van encendiendo con el scroll.
+function ScrollWords({ text, className }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.55"] });
+  const words = text.split(" ");
+  return (
+    <p ref={ref} className={className}>
+      {words.map((word, i) => (
+        <Word key={i} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]}>
+          {word}
+        </Word>
+      ))}
+    </p>
+  );
+}
+
+function Word({ children, progress, range }) {
+  const opacity = useTransform(progress, range, [0.18, 1]);
+  return <motion.span style={{ opacity }}>{children} </motion.span>;
+}
+
+function Row({ label, children }) {
+  return (
+    <div className="grid grid-cols-[6.5rem_1fr] gap-3 border-t border-fg/10 py-3">
+      <dt className="text-muted">{label}</dt>
+      <dd>{children}</dd>
+    </div>
+  );
 }
 
 const About = () => {
-  const { i18n } = useTranslation();
-  const age = getAge();
-  const aboutRef = useFirestore().collection("about").doc("personal-info");
-
-  const { status, data: aboutInfo } = useFirestoreDocData(aboutRef);
+  const { lang, t, pick } = useLang();
+  const { status, data: about } = useDoc("about", "personal-info");
+  const { data: home } = useDoc("home", "main-info");
+  const { data: jobs } = useCollection("experience");
+  const { data: links } = useDoc("contact", "social-links");
+  const { data: contact } = useDoc("contact", "contact-info");
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
+      <Page>
+        <Loader />
+      </Page>
     );
   }
 
+  const title = pick(about, "page_title");
+  const [lead, ...paragraphs] = pick(about, "description") || [];
+  const days = daysToBirthday();
+  const current = (jobs || []).find((j) => ONGOING.test(j.period_es || ""));
+
+  const profiles = [
+    ["LinkedIn", links?.linkedin],
+    ["GitHub", `https://github.com/${GITHUB_USER}`],
+    ["GitLab", links?.gitlab],
+    ["X", links?.twitter],
+  ].filter(([, url]) => url);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8 pt-28 lg:p-60 pb-28">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-8 md:mb-12"
-        >
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-            {aboutInfo[`page_title_${i18n.language}`]}
+    <Page title={title}>
+      <section className="wrap grid grid-cols-12 gap-x-6 gap-y-14 pt-32 md:pt-40">
+        <div className="col-span-12 md:col-span-4">
+          <h1 className="title">
+            <SplitText text={title} />
           </h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto rounded-full"></div>
-        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 md:p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
-          >
-            <div className="flex flex-col items-center">
-              <div className="relative group">
-                <img
-                  className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-                  src={aboutInfo.photo}
-                  alt="Rubén Collado"
-                />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              <div className="mt-4 md:mt-8 text-center space-y-2 md:space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold">
-                  {aboutInfo.name}
-                </h2>
-                <div className="space-y-1 md:space-y-2">
-                  <p className="text-gray-300 text-sm md:text-base">
-                    {aboutInfo[`birthDate_${i18n.language}`]} - {age}{" "}
-                    {i18n.language === "es" ? "años" : "years old"}
-                  </p>
-                  <p className="text-gray-300 text-sm md:text-base">
-                    {aboutInfo[`location_${i18n.language}`]}
-                  </p>
-                </div>
-              </div>
+          <Fade delay={0.2} className="mt-10 flex items-center gap-5 md:block">
+            <div className="w-28 shrink-0 md:w-[220px]">
+              <Portrait sources={[LOCAL_PHOTO, about.photo]} alt={about.name} />
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 md:p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-300"
-          >
-            <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-400 text-center lg:text-left">
-              {i18n.language === "es" ? "Más sobre mí" : "More about me"}
-            </h2>
-            <div className="space-y-4 md:space-y-6 text-gray-300 text-sm md:text-base text-justify">
-              {aboutInfo[`description_${i18n.language}`].map(
-                (paragraph, index) => (
-                  <p key={index} className="leading-relaxed">
-                    {paragraph}
-                  </p>
-                ),
-              )}
+            <div className="md:mt-6">
+              <p className="text-[17px] font-medium tracking-[-0.01em]">{about.name}</p>
+              <p className="text-muted">{pick(home, "title")}</p>
             </div>
-          </motion.div>
+          </Fade>
+
+          {current && (
+            <Fade delay={0.3} as="p" className="mt-8 flex items-start gap-2.5 text-[14px] leading-snug">
+              <span className="live-dot mt-[7px] shrink-0" />
+              <span>
+                <span className="text-muted">{lang === "es" ? "Ahora: " : "Now: "}</span>
+                {pick(current, "title")} {lang === "es" ? "en" : "at"}{" "}
+                <a href={current.link} target="_blank" rel="noopener noreferrer" className="inline-link">
+                  {current.company}
+                </a>
+              </span>
+            </Fade>
+          )}
+
+          <Fade delay={0.35} as="dl" className="mt-8 border-b border-fg/10 text-[14px]">
+            <Row label={t.born}>{pick(about, "birthDate")}</Row>
+            <Row label={t.base}>{pick(about, "location")}</Row>
+            <Row label={t.age}>
+              <LiveAge /> <span className="text-muted">{t.years}</span>
+              <span className="meta block">{days === 0 ? t.birthdayToday : t.birthdayIn(days)}</span>
+            </Row>
+            {contact?.email && (
+              <Row label="Email">
+                <a href={`mailto:${contact.email}`} className="link">
+                  {contact.email}
+                </a>
+              </Row>
+            )}
+          </Fade>
+
+          <Fade delay={0.4} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[14px]">
+            {profiles.map(([name, url]) => (
+              <a key={name} href={url} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-1">
+                <span className="link">{name}</span>
+                <Arrow className="w-3 text-accent transition-transform duration-500 ease-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            ))}
+          </Fade>
         </div>
-      </div>
-    </div>
+
+        <div className="col-span-12 md:col-span-7 md:col-start-6 md:pt-[5.5rem]">
+          {lead && (
+            <ScrollWords
+              text={lead}
+              className="text-[clamp(1.45rem,2.5vw,2.15rem)] leading-[1.28] tracking-[-0.025em]"
+            />
+          )}
+
+          <div className="mt-14 grid gap-8 sm:grid-cols-2">
+            {paragraphs.map((p, i) => (
+              <Fade key={i} delay={i * 0.08} as="p" className="leading-relaxed text-fg/70">
+                {p}
+              </Fade>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </Page>
   );
 };
 
